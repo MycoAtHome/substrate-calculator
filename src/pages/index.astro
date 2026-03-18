@@ -1,0 +1,183 @@
+---
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Substrate Calculator</title>
+  </head>
+  <body>
+    <main>
+      <div class="calc">
+        <h2>Substrate calculator</h2>
+        <p class="sub">Coco coir bulk substrate for CO2-tolerant species</p>
+
+        <div class="section-label">Container dimensions</div>
+        <div class="row">
+          <div class="field">
+            <label>Length</label>
+            <input type="number" id="len" min="1" placeholder="e.g. 24" oninput="calc()">
+            <span class="unit">inches</span>
+          </div>
+          <div class="field">
+            <label>Width</label>
+            <input type="number" id="wid" min="1" placeholder="e.g. 16" oninput="calc()">
+            <span class="unit">inches</span>
+          </div>
+          <div class="field">
+            <label>Substrate depth</label>
+            <input type="number" id="dep" min="1" placeholder="e.g. 4" oninput="calc()">
+            <span class="unit">inches</span>
+          </div>
+        </div>
+
+        <div class="section-label">Spawn ratio</div>
+        <div class="ratio-row">
+          <label>Coir : spawn</label>
+          <input type="number" id="ratio" min="1" max="50" value="10" oninput="calc()">
+          <span class="desc" id="ratio-desc">: 1 &nbsp;—&nbsp; 10% spawn by volume</span>
+        </div>
+
+        <div class="section-label">Optional additives</div>
+
+        <div class="additive-block">
+          <div class="additive-header" onclick="toggleAdditive('verm')">
+            <span>Vermiculite</span>
+            <button class="toggle-btn" id="verm-btn">+ Add</button>
+          </div>
+          <div id="verm-inputs" style="display:none">
+            <div class="additive-inputs">
+              <input type="number" id="verm-amt" min="0" max="20" step="0.1" value="2" oninput="calc()">
+              <label>liters</label>
+            </div>
+            <p class="additive-note">CVG standard: ~2L per 675g dry coir &nbsp;·&nbsp; water adjusted +450ml per liter</p>
+          </div>
+        </div>
+
+        <div class="additive-block">
+          <div class="additive-header" onclick="toggleAdditive('gyp')">
+            <span>Gypsum</span>
+            <button class="toggle-btn" id="gyp-btn">+ Add</button>
+          </div>
+          <div id="gyp-inputs" style="display:none">
+            <div class="additive-inputs">
+              <input type="number" id="gyp-pct" min="0" max="50" step="0.5" value="15" oninput="calc()">
+              <label>% of dry coir weight</label>
+            </div>
+            <p class="additive-note">CVG standard: ~15% of dry coir weight (~100g per 675g coir)</p>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div id="results-area"><p class="empty">Enter your container dimensions above to see results.</p></div>
+      </div>
+    </main>
+  </body>
+  <style is:global>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;padding:2rem;max-width:600px;margin:0 auto}
+h2{font-size:22px;font-weight:500;margin-bottom:0.25rem}
+.sub{font-size:14px;color:#666;margin-bottom:1.5rem}
+.section-label{font-size:12px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:0.06em;margin:1.25rem 0 0.75rem}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:13px;color:#555}
+.field input{width:100%;padding:8px 10px;font-size:15px;border:1px solid #ddd;border-radius:6px}
+.field input:focus{outline:none;border-color:#888}
+.unit{font-size:12px;color:#999;margin-top:2px}
+.ratio-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.ratio-row label{font-size:13px;color:#555;white-space:nowrap}
+.ratio-row input{width:80px;padding:8px 10px;font-size:15px;border:1px solid #ddd;border-radius:6px}
+.desc{font-size:13px;color:#999}
+.additive-block{border:1px solid #eee;border-radius:8px;padding:12px 14px;margin-bottom:8px}
+.additive-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.additive-header span{font-size:14px}
+.toggle-btn{font-size:12px;color:#555;background:#f5f5f5;border:1px solid #ddd;border-radius:6px;padding:3px 10px;cursor:pointer}
+.additive-inputs{margin-top:12px;display:flex;align-items:center;gap:10px}
+.additive-inputs input{width:80px;padding:7px 10px;font-size:14px;border:1px solid #ddd;border-radius:6px}
+.additive-inputs label{font-size:13px;color:#555}
+.additive-note{font-size:12px;color:#999;margin-top:6px}
+.divider{border:none;border-top:1px solid #eee;margin:1.5rem 0}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.result-card{background:#f9f9f9;border-radius:8px;padding:14px 16px}
+.result-card.full{grid-column:1/-1}
+.result-label{font-size:12px;color:#888;margin-bottom:6px}
+.result-value{font-size:22px;font-weight:500}
+.result-unit{font-size:13px;color:#888;margin-left:4px;font-weight:400}
+.result-note{font-size:12px;color:#aaa;margin-top:4px}
+.empty{font-size:14px;color:#aaa;text-align:center;padding:2rem 0}
+.additive-result{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid #eee;margin-top:6px}
+.additive-result:first-child{border-top:none;margin-top:0}
+.additive-result span{font-size:13px;color:#666}
+.additive-result strong{font-size:14px;font-weight:500}
+</style>
+
+<script is:inline>
+const addState={verm:false,gyp:false};
+function toggleAdditive(key){
+  addState[key]=!addState[key];
+  document.getElementById(key+'-inputs').style.display=addState[key]?'block':'none';
+  document.getElementById(key+'-btn').textContent=addState[key]?'− Remove':'+ Add';
+  calc();
+}
+function calc(){
+  const L=parseFloat(document.getElementById('len').value);
+  const W=parseFloat(document.getElementById('wid').value);
+  const D=parseFloat(document.getElementById('dep').value);
+  const ratio=parseFloat(document.getElementById('ratio').value)||10;
+  const pct=(1/(ratio+1)*100).toFixed(1);
+  document.getElementById('ratio-desc').innerHTML=`: 1 &nbsp;—&nbsp; ${pct}% spawn by volume`;
+  if(!L||!W||!D||isNaN(L)||isNaN(W)||isNaN(D)){
+    document.getElementById('results-area').innerHTML='<p class="empty">Enter your container dimensions above to see results.</p>';
+    return;
+  }
+  const totalVol=L*W*D;
+  const coirVol=totalVol*(ratio/(ratio+1));
+  const spawnVol=totalVol*(1/(ratio+1));
+  const dryCoir=coirVol/1.2;
+  let water=dryCoir*5;
+  let addCards='';
+  if(addState.verm){
+    const vl=parseFloat(document.getElementById('verm-amt').value)||2;
+    water+=vl*450;
+    addCards+=`<div class="additive-result"><span>Vermiculite</span><strong>${vl.toFixed(1)} L</strong></div>`;
+  }
+  if(addState.gyp){
+    const gp=parseFloat(document.getElementById('gyp-pct').value)||15;
+    const gg=Math.round(dryCoir*gp/100);
+    addCards+=`<div class="additive-result"><span>Gypsum (${gp}%)</span><strong>${gg} g</strong></div>`;
+  }
+  const waterNote=addState.verm
+    ?`${Math.round(dryCoir*5)} ml coir + ${Math.round((parseFloat(document.getElementById('verm-amt').value)||2)*450)} ml verm`
+    :'5× dry coir weight';
+  const addSection=addCards?`<div class="result-card full"><div class="result-label">Additives</div>${addCards}</div>`:'';
+  const spawnL=(spawnVol*0.016387).toFixed(2);
+  const totalL=(totalVol*0.016387).toFixed(1);
+  document.getElementById('results-area').innerHTML=`
+    <div class="results">
+      <div class="result-card">
+        <div class="result-label">Dry coco coir</div>
+        <div class="result-value">${Math.round(dryCoir)}<span class="result-unit">g</span></div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Water to add</div>
+        <div class="result-value">${Math.round(water)}<span class="result-unit">ml</span></div>
+        <div class="result-note">${waterNote}</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Grain spawn needed</div>
+        <div class="result-value">${spawnL}<span class="result-unit">L</span></div>
+        <div class="result-note">${ratio}:1 coir-to-spawn ratio</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Total substrate volume</div>
+        <div class="result-value">${totalL}<span class="result-unit">L</span></div>
+        <div class="result-note">${Math.round(totalVol)} cubic inches</div>
+      </div>
+      ${addSection}
+    </div>
+  `;
+}
+</script>
+</html>
