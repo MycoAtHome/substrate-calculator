@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Substrate Calculator</title>
+    <title>Substrate Calculator — MycoAtHome</title>
   </head>
   <body>
     <main>
@@ -12,22 +12,63 @@
         <h2>Substrate calculator</h2>
         <p class="sub">Coco coir bulk substrate for CO2-tolerant species</p>
 
-        <div class="section-label">Container dimensions</div>
-        <div class="row">
-          <div class="field">
-            <label>Length</label>
-            <input type="number" id="len" min="1" placeholder="e.g. 24" oninput="calc()">
-            <span class="unit">inches</span>
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="btn-dims" onclick="setMode('dims')">I know my container size</button>
+          <button class="mode-btn" id="btn-spawn" onclick="setMode('spawn')">I know my spawn volume</button>
+        </div>
+
+        <div id="mode-dims">
+          <div class="section-label">Container dimensions</div>
+          <div class="row">
+            <div class="field">
+              <label>Length</label>
+              <input type="number" id="len" min="1" placeholder="e.g. 24" oninput="calc()">
+              <span class="unit">inches</span>
+            </div>
+            <div class="field">
+              <label>Width</label>
+              <input type="number" id="wid" min="1" placeholder="e.g. 16" oninput="calc()">
+              <span class="unit">inches</span>
+            </div>
+            <div class="field">
+              <label>Substrate depth</label>
+              <input type="number" id="dep" min="1" placeholder="e.g. 4" oninput="calc()">
+              <span class="unit">inches</span>
+            </div>
           </div>
-          <div class="field">
-            <label>Width</label>
-            <input type="number" id="wid" min="1" placeholder="e.g. 16" oninput="calc()">
-            <span class="unit">inches</span>
+        </div>
+
+        <div id="mode-spawn" style="display:none">
+          <div class="section-label">Spawn volume</div>
+          <div class="spawn-row">
+            <input type="number" id="spawn-vol" min="1" step="1" value="2" oninput="calc()">
+            <select id="spawn-unit" onchange="onUnitChange()">
+              <option value="cups">cups</option>
+              <option value="liters">liters</option>
+            </select>
+            <button class="ub-btn" id="ub-btn" onclick="toggleUB()">
+              <span class="ub-check">
+                <svg class="ub-check-mark" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="1.5,4.5 3.5,7 7.5,2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              Uncle Ben's
+            </button>
           </div>
-          <div class="field">
-            <label>Substrate depth</label>
-            <input type="number" id="dep" min="1" placeholder="e.g. 4" oninput="calc()">
-            <span class="unit">inches</span>
+          <p class="spawn-hint" id="spawn-hint"></p>
+
+          <div class="section-label">Container dimensions</div>
+          <div class="row2">
+            <div class="field">
+              <label>Length</label>
+              <input type="number" id="len2" min="1" placeholder="e.g. 24" oninput="calc()">
+              <span class="unit">inches</span>
+            </div>
+            <div class="field">
+              <label>Width</label>
+              <input type="number" id="wid2" min="1" placeholder="e.g. 16" oninput="calc()">
+              <span class="unit">inches</span>
+            </div>
           </div>
         </div>
 
@@ -39,7 +80,6 @@
         </div>
 
         <div class="section-label">Optional additives</div>
-
         <div class="additive-block">
           <div class="additive-header" onclick="toggleAdditive('verm')">
             <span>Vermiculite</span>
@@ -53,7 +93,6 @@
             <p class="additive-note">CVG standard: ~2L per 675g dry coir &nbsp;·&nbsp; water adjusted +450ml per liter</p>
           </div>
         </div>
-
         <div class="additive-block">
           <div class="additive-header" onclick="toggleAdditive('gyp')">
             <span>Gypsum</span>
@@ -69,27 +108,43 @@
         </div>
 
         <hr class="divider">
-
-        <div id="results-area"><p class="empty">Enter your container dimensions above to see results.</p></div>
+        <div id="results-area"><p class="empty">Enter your details above to see results.</p></div>
       </div>
     </main>
   </body>
-  <style is:global>
+</html>
+
+<style is:global>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,sans-serif;padding:2rem;max-width:600px;margin:0 auto}
 h2{font-size:22px;font-weight:500;margin-bottom:0.25rem}
 .sub{font-size:14px;color:#666;margin-bottom:1.5rem}
+.mode-toggle{display:flex;margin-bottom:1.5rem;border:1px solid #ddd;border-radius:8px;overflow:hidden;width:100%}
+.mode-btn{flex:1;padding:9px 12px;font-size:13px;background:#fff;color:#888;border:none;cursor:pointer}
+.mode-btn.active{background:#f5f5f5;color:#111;font-weight:500}
+.mode-btn:first-child{border-right:1px solid #ddd}
 .section-label{font-size:12px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:0.06em;margin:1.25rem 0 0.75rem}
-.row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .field{display:flex;flex-direction:column;gap:5px}
 .field label{font-size:13px;color:#555}
-.field input{width:100%;padding:8px 10px;font-size:15px;border:1px solid #ddd;border-radius:6px}
-.field input:focus{outline:none;border-color:#888}
+.field input,.field select{width:100%;padding:8px 10px;font-size:15px;border:1px solid #ddd;border-radius:6px}
+.field input:focus,.field select:focus{outline:none;border-color:#888}
 .unit{font-size:12px;color:#999;margin-top:2px}
 .ratio-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .ratio-row label{font-size:13px;color:#555;white-space:nowrap}
 .ratio-row input{width:80px;padding:8px 10px;font-size:15px;border:1px solid #ddd;border-radius:6px}
 .desc{font-size:13px;color:#999}
+.spawn-row{display:flex;align-items:flex-end;gap:10px;margin-bottom:6px}
+.spawn-row input{width:90px;padding:8px 10px;font-size:15px;border:1px solid #ddd;border-radius:6px}
+.spawn-row select{padding:8px 10px;font-size:14px;border:1px solid #ddd;border-radius:6px}
+.ub-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;font-size:13px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#666;cursor:pointer;white-space:nowrap}
+.ub-btn.active{background:#f0faf4;border-color:#6abf8a;color:#2d7a4f;font-weight:500}
+.ub-check{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid #ccc;background:transparent;flex-shrink:0}
+.ub-btn.active .ub-check{background:#2d7a4f;border-color:#2d7a4f}
+.ub-check-mark{display:none;width:9px;height:9px}
+.ub-btn.active .ub-check-mark{display:block}
+.spawn-hint{font-size:12px;color:#999;margin-bottom:10px;min-height:16px}
 .additive-block{border:1px solid #eee;border-radius:8px;padding:12px 14px;margin-bottom:8px}
 .additive-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .additive-header span{font-size:14px}
@@ -102,11 +157,16 @@ h2{font-size:22px;font-weight:500;margin-bottom:0.25rem}
 .results{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .result-card{background:#f9f9f9;border-radius:8px;padding:14px 16px}
 .result-card.full{grid-column:1/-1}
+.result-card.highlight{border:2px solid #7ab8f5;background:#eef5fd}
 .result-label{font-size:12px;color:#888;margin-bottom:6px}
+.result-card.highlight .result-label{color:#3a7abf}
 .result-value{font-size:22px;font-weight:500}
+.result-card.highlight .result-value{color:#1a5fa0}
 .result-unit{font-size:13px;color:#888;margin-left:4px;font-weight:400}
 .result-note{font-size:12px;color:#aaa;margin-top:4px}
+.result-card.highlight .result-note{color:#5a96cc}
 .empty{font-size:14px;color:#aaa;text-align:center;padding:2rem 0}
+.alert{background:#fffbea;border:1px solid #f0c040;border-radius:8px;padding:10px 14px;font-size:13px;color:#8a6200;margin-bottom:10px}
 .additive-result{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid #eee;margin-top:6px}
 .additive-result:first-child{border-top:none;margin-top:0}
 .additive-result span{font-size:13px;color:#666}
@@ -114,33 +174,78 @@ h2{font-size:22px;font-weight:500;margin-bottom:0.25rem}
 </style>
 
 <script is:inline>
+const CUPS_TO_LITERS=0.236588;
+const LITERS_TO_CU_IN=61.0237;
+const UB_CUPS_PER_POUCH=2;
+let currentMode='dims';
+let ubMode=false;
 const addState={verm:false,gyp:false};
+
+function setMode(mode){
+  currentMode=mode;
+  document.getElementById('mode-dims').style.display=mode==='dims'?'block':'none';
+  document.getElementById('mode-spawn').style.display=mode==='spawn'?'block':'none';
+  document.getElementById('btn-dims').classList.toggle('active',mode==='dims');
+  document.getElementById('btn-spawn').classList.toggle('active',mode==='spawn');
+  document.getElementById('results-area').innerHTML='<p class="empty">Enter your details above to see results.</p>';
+  calc();
+}
+
+function toggleUB(){
+  ubMode=!ubMode;
+  const btn=document.getElementById('ub-btn');
+  const unitSel=document.getElementById('spawn-unit');
+  const input=document.getElementById('spawn-vol');
+  btn.classList.toggle('active',ubMode);
+  unitSel.style.display=ubMode?'none':'block';
+  if(ubMode){
+    input.min=1;
+    input.step=1;
+    input.value=Math.max(1,Math.round(parseFloat(input.value)||2));
+  } else {
+    input.step=0.1;
+  }
+  updateHint();
+  calc();
+}
+
+function onUnitChange(){
+  updateHint();
+  calc();
+}
+
+function updateHint(){
+  const hint=document.getElementById('spawn-hint');
+  if(ubMode){
+    const n=parseFloat(document.getElementById('spawn-vol').value)||1;
+    const cups=n*UB_CUPS_PER_POUCH;
+    const L=(cups*CUPS_TO_LITERS).toFixed(2);
+    hint.textContent=`${n} pouch${n!==1?'es':''} = ~${cups} cups = ~${L} L`;
+  } else {
+    hint.textContent='';
+  }
+}
+
 function toggleAdditive(key){
   addState[key]=!addState[key];
   document.getElementById(key+'-inputs').style.display=addState[key]?'block':'none';
   document.getElementById(key+'-btn').textContent=addState[key]?'− Remove':'+ Add';
   calc();
 }
-function calc(){
-  const L=parseFloat(document.getElementById('len').value);
-  const W=parseFloat(document.getElementById('wid').value);
-  const D=parseFloat(document.getElementById('dep').value);
+
+function getSpawnLiters(){
+  const raw=parseFloat(document.getElementById('spawn-vol').value);
+  if(!raw||isNaN(raw)) return null;
+  if(ubMode) return raw*UB_CUPS_PER_POUCH*CUPS_TO_LITERS;
+  const unit=document.getElementById('spawn-unit').value;
+  return unit==='cups'?raw*CUPS_TO_LITERS:raw;
+}
+
+function renderResults(dryCoir,water,spawnL,totalVolCuIn,depthIn,highlightDepth){
   const ratio=parseFloat(document.getElementById('ratio').value)||10;
-  const pct=(1/(ratio+1)*100).toFixed(1);
-  document.getElementById('ratio-desc').innerHTML=`: 1 &nbsp;—&nbsp; ${pct}% spawn by volume`;
-  if(!L||!W||!D||isNaN(L)||isNaN(W)||isNaN(D)){
-    document.getElementById('results-area').innerHTML='<p class="empty">Enter your container dimensions above to see results.</p>';
-    return;
-  }
-  const totalVol=L*W*D;
-  const coirVol=totalVol*(ratio/(ratio+1));
-  const spawnVol=totalVol*(1/(ratio+1));
-  const dryCoir=coirVol/1.2;
-  let water=dryCoir*5;
   let addCards='';
   if(addState.verm){
     const vl=parseFloat(document.getElementById('verm-amt').value)||2;
-    water+=vl*450;
     addCards+=`<div class="additive-result"><span>Vermiculite</span><strong>${vl.toFixed(1)} L</strong></div>`;
   }
   if(addState.gyp){
@@ -152,10 +257,21 @@ function calc(){
     ?`${Math.round(dryCoir*5)} ml coir + ${Math.round((parseFloat(document.getElementById('verm-amt').value)||2)*450)} ml verm`
     :'5× dry coir weight';
   const addSection=addCards?`<div class="result-card full"><div class="result-label">Additives</div>${addCards}</div>`:'';
-  const spawnL=(spawnVol*0.016387).toFixed(2);
-  const totalL=(totalVol*0.016387).toFixed(1);
+  const totalL=(totalVolCuIn*0.016387).toFixed(1);
+  const depthCard=highlightDepth
+    ?`<div class="result-card highlight">
+        <div class="result-label">Recommended substrate depth</div>
+        <div class="result-value">${depthIn.toFixed(1)}<span class="result-unit">inches</span></div>
+        <div class="result-note">based on your container and spawn volume</div>
+      </div>`
+    :'';
+  const alertHTML=(highlightDepth&&depthIn<2.5)
+    ?`<div class="alert">Recommended depth is under 2.5 inches. Consider using less spawn, a smaller container, or a higher coir-to-spawn ratio for better results.</div>`
+    :'';
   document.getElementById('results-area').innerHTML=`
+    ${alertHTML}
     <div class="results">
+      ${depthCard}
       <div class="result-card">
         <div class="result-label">Dry coco coir</div>
         <div class="result-value">${Math.round(dryCoir)}<span class="result-unit">g</span></div>
@@ -173,11 +289,52 @@ function calc(){
       <div class="result-card">
         <div class="result-label">Total substrate volume</div>
         <div class="result-value">${totalL}<span class="result-unit">L</span></div>
-        <div class="result-note">${Math.round(totalVol)} cubic inches</div>
+        <div class="result-note">${Math.round(totalVolCuIn)} cubic inches</div>
       </div>
       ${addSection}
     </div>
   `;
 }
+
+function calc(){
+  const ratio=parseFloat(document.getElementById('ratio').value)||10;
+  const pct=(1/(ratio+1)*100).toFixed(1);
+  document.getElementById('ratio-desc').innerHTML=`: 1 &nbsp;—&nbsp; ${pct}% spawn by volume`;
+  updateHint();
+
+  if(currentMode==='dims'){
+    const L=parseFloat(document.getElementById('len').value);
+    const W=parseFloat(document.getElementById('wid').value);
+    const D=parseFloat(document.getElementById('dep').value);
+    if(!L||!W||!D){
+      document.getElementById('results-area').innerHTML='<p class="empty">Enter your container dimensions above to see results.</p>';
+      return;
+    }
+    const totalVol=L*W*D;
+    const coirVol=totalVol*(ratio/(ratio+1));
+    const spawnVol=totalVol*(1/(ratio+1));
+    const dryCoir=coirVol/1.2;
+    let water=dryCoir*5;
+    if(addState.verm) water+=(parseFloat(document.getElementById('verm-amt').value)||2)*450;
+    const spawnL=(spawnVol*0.016387).toFixed(2);
+    renderResults(dryCoir,water,spawnL,totalVol,null,false);
+
+  } else {
+    const spawnLiters=getSpawnLiters();
+    const L=parseFloat(document.getElementById('len2').value);
+    const W=parseFloat(document.getElementById('wid2').value);
+    if(!spawnLiters||!L||!W){
+      document.getElementById('results-area').innerHTML='<p class="empty">Enter your spawn volume and container length and width to see results.</p>';
+      return;
+    }
+    const spawnCuIn=spawnLiters*LITERS_TO_CU_IN;
+    const totalVol=spawnCuIn*(ratio+1);
+    const coirVol=totalVol*(ratio/(ratio+1));
+    const dryCoir=coirVol/1.2;
+    let water=dryCoir*5;
+    if(addState.verm) water+=(parseFloat(document.getElementById('verm-amt').value)||2)*450;
+    const depthIn=totalVol/(L*W);
+    renderResults(dryCoir,water,spawnLiters.toFixed(2),totalVol,depthIn,true);
+  }
+}
 </script>
-</html>
