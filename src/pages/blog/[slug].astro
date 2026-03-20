@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+<Base title={`${post.data.title} — Myco@Home`} description={post.data.description}>
+  <article>
+    <p class="post-date">{post.data.date.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+    <h1>{post.data.title}</h1>
+    <div class="post-content">
+      <Content />
+    </div>
+    <a href="/blog" class="back-link">← Back to blog</a>
+  </article>
+</Base>
+
+<style>
+.post-date{font-size:12px;color:#999;margin-bottom:0.5rem}
+.post-content{margin-top:1.5rem;font-size:15px;line-height:1.8;color:#333}
+.post-content h2{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;margin:2rem 0 0.75rem}
+.post-content h3{font-size:16px;font-weight:700;margin:1.5rem 0 0.5rem}
+.post-content p{margin-bottom:1rem}
+.post-content ul,.post-content ol{margin:0 0 1rem 1.5rem}
+.post-content li{margin-bottom:0.4rem}
+.post-content strong{font-weight:700}
+.post-content a{color:#555;text-decoration:underline}
+.back-link{display:inline-block;margin-top:2rem;font-size:13px;color:#888;text-decoration:none}
+.back-link:hover{color:#333}
+</style>

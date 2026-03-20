@@ -1,0 +1,40 @@
+---
+const { title, description } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="page-wrap">
+      <header>
+        <img src="/MycoLogo2.png" alt="Myco@Home" style="width:160px;display:block;margin:0 auto 0.5rem;">
+        <nav>
+          <a href="/">Calculator</a>
+          <a href="/blog">Blog</a>
+          <a href="/about">About</a>
+        </nav>
+      </header>
+      <main>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Lato',system-ui,sans-serif;background-color:#fef6f0}
+.page-wrap{max-width:600px;margin:0 auto;padding:2rem}
+header{text-align:center;margin-bottom:1.5rem}
+nav{display:flex;justify-content:center;gap:1.5rem;font-size:14px}
+nav a{color:#555;text-decoration:none}
+nav a:hover{color:#222}
+h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;margin-bottom:0.25rem}
+</style>
