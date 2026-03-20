@@ -6,13 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Mushroom Substrate Calculator — Myco@Home</title>
     <meta name="description" content="Free substrate calculator for CO2-tolerant mushroom cultivation. Enter your container dimensions and get exact coco coir, water, and grain spawn amounts instantly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
   </head>
   <body>
     <main>
       <div class="calc">
-        <img src="/MycoLogo2.png" alt="Myco@Home" style="width:360px;display:block;margin:0 auto 1rem;">
-        <h1>Substrate calculator</h1>
-        <p class="sub">Monotub bulk substrate for CO2-tolerant species</p>
+        <header style="text-align:center;margin-bottom:2rem">
+          <img src="/MycoLogo2.png" alt="Myco@Home" style="width:180px;display:block;margin:0 auto 1rem;">
+          <nav style="display:flex;justify-content:center;gap:1.5rem;font-size:14px">
+            <a href="/" style="color:#555;text-decoration:none">Calculator</a>
+            <a href="/guides" style="color:#555;text-decoration:none">Guides</a>
+            <a href="/about" style="color:#555;text-decoration:none">About</a>
+          </nav>
+        </header>
+        <h1 style="text-align:center">Substrate calculator</h1>
+        <p class="sub" style="text-align:center">Coco coir bulk substrate for CO2-tolerant species</p>
 
         <div class="mode-toggle">
           <button class="mode-btn active" id="btn-dims" onclick="setMode('dims')">I know my container size</button>
@@ -134,8 +144,8 @@
 
 <style is:global>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;padding:2rem;max-width:600px;margin:0 auto;background-color:#fef6f0}
-h1{font-size:22px;font-weight:500;margin-bottom:0.25rem}
+body{font-family:'Lato',system-ui,sans-serif;padding:2rem;max-width:600px;margin:0 auto;background-color:#fef6f0}
+h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;margin-bottom:0.25rem}
 .sub{font-size:14px;color:#666;margin-bottom:1.5rem}
 .mode-toggle{display:flex;margin-bottom:1.5rem;border:1px solid #ddd;border-radius:8px;overflow:hidden;width:100%}
 .mode-btn{flex:1;padding:9px 12px;font-size:13px;background:#fff;color:#888;border:none;cursor:pointer}
@@ -163,7 +173,7 @@ h1{font-size:22px;font-weight:500;margin-bottom:0.25rem}
 .ub-check-mark{display:none;width:9px;height:9px}
 .ub-btn.active .ub-check-mark{display:block}
 .spawn-hint{font-size:12px;color:#999;margin-bottom:10px;min-height:16px}
-.additive-block{border:1px solid #eee;border-radius:8px;padding:12px 14px;margin-bottom:8px}
+.additive-block{border:1px solid #ddd;border-radius:8px;padding:12px 14px;margin-bottom:8px;background:#fff}
 .additive-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .additive-header span{font-size:14px}
 .toggle-btn{font-size:12px;color:#555;background:#f5f5f5;border:1px solid #ddd;border-radius:6px;padding:3px 10px;cursor:pointer}
