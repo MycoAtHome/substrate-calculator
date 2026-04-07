@@ -1,5 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import rehypeRaw from 'rehype-raw';
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  markdown: {
+    rehypePlugins: [rehypeRaw],
+  },
+});
