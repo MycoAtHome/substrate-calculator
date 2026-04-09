@@ -1,151 +1,129 @@
 ---
+import Base from '../layouts/Base.astro';
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mushroom Substrate Calculator — Myco@Home</title>
-    <meta name="description" content="Free substrate calculator for CO2-tolerant mushroom cultivation. Enter your container dimensions and get exact coco coir, water, and grain spawn amounts instantly." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <main>
-      <div class="calc">
-        <header style="text-align:center;margin-bottom:1.5rem">
-          <img src="/MycoLogo2.png" alt="Myco@Home" style="width:160px;display:block;margin:0 auto 0.5rem;">
-          <nav style="display:flex;justify-content:center;gap:1.5rem;font-size:14px">
-            <a href="/" style="color:#555;text-decoration:none">Calculator</a>
-            <a href="/blog" style="color:#555;text-decoration:none">Blog</a>
-            <a href="/about" style="color:#555;text-decoration:none">About</a>
-          </nav>
-        </header>
-        <h1 style="text-align:center">Substrate calculator</h1>
-        <p class="sub" style="text-align:center">Coco coir bulk substrate for CO2-tolerant species</p>
+<Base title="Mushroom Substrate Calculator — Myco@Home" description="Free substrate calculator for CO2-tolerant mushroom cultivation. Enter your container dimensions and get exact coco coir, water, and grain spawn amounts instantly.">
+  <div class="calc">
+    <h1 style="text-align:center">Substrate calculator</h1>
+    <p class="sub" style="text-align:center">Coco coir bulk substrate for CO2-tolerant species</p>
 
-        <div class="mode-toggle">
-          <button class="mode-btn active" id="btn-dims" onclick="setMode('dims')">I know my container size</button>
-          <button class="mode-btn" id="btn-spawn" onclick="setMode('spawn')">I know my spawn volume</button>
-        </div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btn-dims" onclick="setMode('dims')">I know my container size</button>
+      <button class="mode-btn" id="btn-spawn" onclick="setMode('spawn')">I know my spawn volume</button>
+    </div>
 
-        <div id="mode-dims">
-          <div class="section-label">Container dimensions</div>
-          <div class="row">
-            <div class="field">
-              <label>Length</label>
-              <input type="number" id="len" min="1" placeholder="e.g. 24" oninput="calc()">
-              <span class="unit">inches</span>
-            </div>
-            <div class="field">
-              <label>Width</label>
-              <input type="number" id="wid" min="1" placeholder="e.g. 16" oninput="calc()">
-              <span class="unit">inches</span>
-            </div>
-            <div class="field">
-              <label>Substrate depth</label>
-              <input type="number" id="dep" min="1" placeholder="e.g. 4" oninput="calc()">
-              <span class="unit">inches</span>
-            </div>
-          </div>
+    <div id="mode-dims">
+      <div class="section-label">Container dimensions</div>
+      <div class="row">
+        <div class="field">
+          <label>Length</label>
+          <input type="number" id="len" min="1" placeholder="e.g. 24" oninput="calc()">
+          <span class="unit">inches</span>
         </div>
-
-        <div id="mode-spawn" style="display:none">
-          <div class="section-label">Spawn volume</div>
-          <div class="spawn-row">
-            <input type="number" id="spawn-vol" min="1" step="1" value="2" oninput="calc()">
-            <select id="spawn-unit" onchange="onUnitChange()">
-              <option value="cups">cups</option>
-              <option value="liters">liters</option>
-            </select>
-            <button class="ub-btn" id="ub-btn" onclick="toggleUB()">
-              <span class="ub-check">
-                <svg class="ub-check-mark" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="1.5,4.5 3.5,7 7.5,2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              Uncle Ben's
-            </button>
-          </div>
-          <p class="spawn-hint" id="spawn-hint"></p>
-
-          <div class="section-label">Container dimensions</div>
-          <div class="row2">
-            <div class="field">
-              <label>Length</label>
-              <input type="number" id="len2" min="1" placeholder="e.g. 24" oninput="calc()">
-              <span class="unit">inches</span>
-            </div>
-            <div class="field">
-              <label>Width</label>
-              <input type="number" id="wid2" min="1" placeholder="e.g. 16" oninput="calc()">
-              <span class="unit">inches</span>
-            </div>
-          </div>
+        <div class="field">
+          <label>Width</label>
+          <input type="number" id="wid" min="1" placeholder="e.g. 16" oninput="calc()">
+          <span class="unit">inches</span>
         </div>
-
-        <div class="section-label">Spawn ratio</div>
-        <div class="ratio-row">
-          <label>Coir : spawn</label>
-          <input type="number" id="ratio" min="1" max="50" value="10" oninput="calc()">
-          <span class="desc" id="ratio-desc">: 1 &nbsp;—&nbsp; 10% spawn by volume</span>
+        <div class="field">
+          <label>Substrate depth</label>
+          <input type="number" id="dep" min="1" placeholder="e.g. 4" oninput="calc()">
+          <span class="unit">inches</span>
         </div>
-
-        <div class="section-label">Optional additives</div>
-        <div class="additive-block">
-          <div class="additive-header" onclick="toggleAdditive('verm')">
-            <span>Vermiculite</span>
-            <button class="toggle-btn" id="verm-btn">+ Add</button>
-          </div>
-          <div id="verm-inputs" style="display:none">
-            <div class="additive-inputs">
-              <input type="number" id="verm-amt" min="0" max="20" step="0.1" value="2" oninput="calc()">
-              <label>liters</label>
-            </div>
-            <p class="additive-note">CVG standard: ~2L per 675g dry coir &nbsp;·&nbsp; water adjusted +450ml per liter</p>
-          </div>
-        </div>
-        <div class="additive-block">
-          <div class="additive-header" onclick="toggleAdditive('gyp')">
-            <span>Gypsum</span>
-            <button class="toggle-btn" id="gyp-btn">+ Add</button>
-          </div>
-          <div id="gyp-inputs" style="display:none">
-            <div class="additive-inputs">
-              <input type="number" id="gyp-pct" min="0" max="50" step="0.5" value="15" oninput="calc()">
-              <label>% of dry coir weight</label>
-            </div>
-            <p class="additive-note">CVG standard: ~15% of dry coir weight (~100g per 675g coir)</p>
-          </div>
-        </div>
-
-          <div class="support-section">
-          <div class="support-card">
-            <p class="support-heading">Find this useful?</p>
-            <p class="support-text">If this calculator saved you time, consider buying me a coffee — it helps keep this site free.</p>
-            <a class="kofi-btn" href="https://ko-fi.com/mycoathome" target="_blank">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 8h1a4 4 0 0 1 0 8h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="6" y1="1" x2="6" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <line x1="14" y1="1" x2="14" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              Buy me a coffee
-            </a>
-          </div>
-        </div>
-        <hr class="divider">
-        <div id="results-area"><p class="empty">Enter your details above to see results.</p></div>
       </div>
-    </main>
-  </body>
-</html>
+    </div>
+
+    <div id="mode-spawn" style="display:none">
+      <div class="section-label">Spawn volume</div>
+      <div class="spawn-row">
+        <input type="number" id="spawn-vol" min="1" step="1" value="2" oninput="calc()">
+        <select id="spawn-unit" onchange="onUnitChange()">
+          <option value="cups">cups</option>
+          <option value="liters">liters</option>
+        </select>
+        <button class="ub-btn" id="ub-btn" onclick="toggleUB()">
+          <span class="ub-check">
+            <svg class="ub-check-mark" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="1.5,4.5 3.5,7 7.5,2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Uncle Ben's
+        </button>
+      </div>
+      <p class="spawn-hint" id="spawn-hint"></p>
+
+      <div class="section-label">Container dimensions</div>
+      <div class="row2">
+        <div class="field">
+          <label>Length</label>
+          <input type="number" id="len2" min="1" placeholder="e.g. 24" oninput="calc()">
+          <span class="unit">inches</span>
+        </div>
+        <div class="field">
+          <label>Width</label>
+          <input type="number" id="wid2" min="1" placeholder="e.g. 16" oninput="calc()">
+          <span class="unit">inches</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Spawn ratio</div>
+    <div class="ratio-row">
+      <label>Coir : spawn</label>
+      <input type="number" id="ratio" min="1" max="50" value="10" oninput="calc()">
+      <span class="desc" id="ratio-desc">: 1 &nbsp;—&nbsp; 10% spawn by volume</span>
+    </div>
+
+    <div class="section-label">Optional additives</div>
+    <div class="additive-block">
+      <div class="additive-header" onclick="toggleAdditive('verm')">
+        <span>Vermiculite</span>
+        <button class="toggle-btn" id="verm-btn">+ Add</button>
+      </div>
+      <div id="verm-inputs" style="display:none">
+        <div class="additive-inputs">
+          <input type="number" id="verm-amt" min="0" max="20" step="0.1" value="2" oninput="calc()">
+          <label>liters</label>
+        </div>
+        <p class="additive-note">CVG standard: ~2L per 675g dry coir &nbsp;·&nbsp; water adjusted +450ml per liter</p>
+      </div>
+    </div>
+    <div class="additive-block">
+      <div class="additive-header" onclick="toggleAdditive('gyp')">
+        <span>Gypsum</span>
+        <button class="toggle-btn" id="gyp-btn">+ Add</button>
+      </div>
+      <div id="gyp-inputs" style="display:none">
+        <div class="additive-inputs">
+          <input type="number" id="gyp-pct" min="0" max="50" step="0.5" value="15" oninput="calc()">
+          <label>% of dry coir weight</label>
+        </div>
+        <p class="additive-note">CVG standard: ~15% of dry coir weight (~100g per 675g coir)</p>
+      </div>
+    </div>
+
+    <div class="support-section">
+      <div class="support-card">
+        <p class="support-heading">Find this useful?</p>
+        <p class="support-text">If this calculator saved you time, consider buying me a coffee — it helps keep this site free.</p>
+        <a class="kofi-btn" href="https://ko-fi.com/mycoathome" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="6" y1="1" x2="6" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="14" y1="1" x2="14" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Buy me a coffee
+        </a>
+      </div>
+    </div>
+    <hr class="divider">
+    <div id="results-area"><p class="empty">Enter your details above to see results.</p></div>
+  </div>
+</Base>
 
 <style is:global>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Lato',system-ui,sans-serif;padding:2rem;max-width:600px;margin:0 auto;background-color:#fef6f0}
-h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;margin-bottom:0.25rem}
+.calc{max-width:600px;margin:0 auto}
 .sub{font-size:14px;color:#666;margin-bottom:1.5rem}
 .mode-toggle{display:flex;margin-bottom:1.5rem;border:1px solid #ddd;border-radius:8px;overflow:hidden;width:100%}
 .mode-btn{flex:1;padding:9px 12px;font-size:13px;background:#fff;color:#888;border:none;cursor:pointer}
