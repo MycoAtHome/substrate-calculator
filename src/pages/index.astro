@@ -101,7 +101,20 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
 
-    <div class="support-section">
+    <div class="guide-banner">
+      <div class="guide-content">
+        <p class="guide-title">Beginner's Mushroom Cultivation Guide</p>
+        <p class="guide-subtitle">CO2-Tolerant Species Edition</p>
+        <p class="guide-desc">Everything you need to grow your first successful flush — substrate prep, grain spawn, monotub setup, and more.</p>
+        <a class="guide-btn" href="https://mycoathome.gumroad.com/l/tdrmkt" target="_blank">Get the guide →</a>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <h2 style="text-align:center;margin-bottom:1rem">Your Substrate:</h2>
+    <div id="results-area"><p class="empty">Enter your details above to see results.</p></div>
+
+<div class="support-section">
       <div class="support-card">
         <p class="support-heading">Find this useful?</p>
         <p class="support-text">If this calculator saved you time, consider buying me a coffee — it helps keep this site free.</p>
@@ -117,8 +130,7 @@ import Base from '../layouts/Base.astro';
         </a>
       </div>
     </div>
-    <hr class="divider">
-    <div id="results-area"><p class="empty">Enter your details above to see results.</p></div>
+
   </div>
 </Base>
 
@@ -183,6 +195,16 @@ import Base from '../layouts/Base.astro';
 .support-text{font-size:13px;color:#666;line-height:1.6}
 .kofi-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:#ff5f5f;color:#fff;font-size:14px;font-weight:500;border-radius:6px;text-decoration:none;width:fit-content}
 .kofi-btn:hover{background:#e54e4e}
+
+h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;margin-bottom:0.25rem}
+
+.guide-banner{margin-top:1.5rem;background:#fff;border:1px solid #ddd;border-radius:8px;padding:1.25rem 1.5rem}
+.guide-title{font-size:16px;font-weight:700;color:#222;margin-bottom:2px}
+.guide-subtitle{font-size:13px;color:#888;margin-bottom:10px}
+.guide-desc{font-size:13px;color:#666;line-height:1.6;margin-bottom:14px}
+.guide-btn{display:inline-flex;align-items:center;padding:9px 18px;background:#4a7c3f;color:#fff;font-size:14px;font-weight:500;border-radius:6px;text-decoration:none}
+.guide-btn:hover{background:#3a6230}
+
 </style>
 
 <script is:inline>
